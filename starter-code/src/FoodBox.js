@@ -1,9 +1,21 @@
 import React, { Component } from "react";
 
 class FoodBox extends Component {
+
+  state = { ...this.props }
+
+  changeTheQuantity = (e) => {
+    
+    this.setState({
+      'quantity': e.target.value,
+    })
+  }
+
+
   render() {
     return (
       <div className="box">
+        {Math.random()}
         <article className="media">
           <div className="media-left">
             <figure className="image is-64x64">
@@ -21,10 +33,10 @@ class FoodBox extends Component {
           <div className="media-right">
             <div className="field has-addons">
               <div className="control">
-                <input className="input" type="number" name={this.props} defaultValue={this.props.quantity} onChange={this.props.changeQuantity}/>
+                <input className="input" type="number" name={this.props.name} defaultValue={this.props.quantity} onChange={this.changeTheQuantity}/>
               </div>
               <div className="control">
-                <button className="button is-info">+</button>
+                <button className="button is-info" onClick={(e) => this.props.updateFoodList(this.state)} >+</button>
               </div>
             </div>
           </div>

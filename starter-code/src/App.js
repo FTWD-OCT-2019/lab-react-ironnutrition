@@ -11,20 +11,61 @@ class App extends Component {
     foodToAdd: '',
     calsToAdd: 0,
     showForm: false,
-    search: ''
+    search: '',
+    listOfFoods: {
+        // "Pizza":{
+        //   quantity: 5,
+        //   calories: 500
+        // },
+        // "Salad": {
+        //   quantity: 3,
+        //   calories: 20
+        // },
+        // "Kiwi" : {
+        //   quantity: 6,
+        //   calories: 99
+        // }
+      } 
   }
+
+  showTodaysFood = () => {
+    let foods = this.state.listOfFoods
+    let array = [] 
+    let total = 0; 
+    for(let key in foods) {
+       console.log( Number(foods[key].calories) )
+       total += Number(foods[key].quantity) * Number(foods[key].calories)
+        array.push (
+            <li key={key}>
+              name: {key} 
+              -
+              calories: {Number(foods[key].quantity) * Number(foods[key].calories)}
+            </li>
+        )
+    }
+    return <ul>TOTAL is {total}!!!!<br></br> {array}</ul>
+  }
+
+
+
+
+
 
 
   showFoods = () => {
     return this.state.foods.map((eachFood,i)=>{
-      return < FoodBox changeQuantity={this.changeTheQuantity} key={i} {...eachFood}/>
+      return < FoodBox updateFoodList={this.updateFoodList} changeQuantity={this.changeTheQuantity} key={i} {...eachFood}/>
     })
   }
 
 
-  changeTheQuantity = (e) => {
-    console.log('change ', e.target.value)
-    console.log(e.target.name)
+  updateFoodList = (foodBoxState) => {
+    console.log(foodBoxState)
+    let newListOfFoods = {...this.state.listOfFoods}
+    newListOfFoods[foodBoxState.name] = foodBoxState //newListOfFoods['pizza'] = {  caloies: 5, qunatity: 7} 
+    this.setState({
+      listOfFoods: newListOfFoods
+    })
   }
 
   addFood = (e) => {
@@ -79,6 +120,8 @@ class App extends Component {
 
     console.log(filteredFoods)
   }
+
+ 
  
   showTheForm = () => {
   
@@ -100,6 +143,9 @@ class App extends Component {
 
   render() {
     return (
+
+      <React.Fragment>
+
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -110,12 +156,14 @@ class App extends Component {
       {this.showTheForm()}
 
       {this.showFoods()}
-
-
-
-
       </div>
-    );
+
+      <div className="todaysFood">
+            Todays Food
+            {this.showTodaysFood()}
+      </div>
+
+      </React.Fragment>    );
   }
 }
 
